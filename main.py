@@ -18,7 +18,7 @@ from telegram.ext import (
 
 from config import Config
 from database import DatabaseManager
-from utils.logger import setup_logging
+from logger import setup_logging
 from handlers.message_handler import MessageHandlers
 from handlers.group_handler import GroupHandlers
 from handlers.error_handler import ErrorHandlers
