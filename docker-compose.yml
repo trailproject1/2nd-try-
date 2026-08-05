@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    build: .
+    container_name: telegram-chat-cleaner
+    restart: always
+    
+    environment:
+      # Required: Your Telegram bot token
+      BOT_TOKEN: ${BOT_TOKEN}
+      
+      # Optional: Logging configuration
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_DIR: /app/logs
+      
+      # Database configuration
+      DATABASE_PATH: /app/data/bot.db
+      
+      # Bot settings
+      DEFAULT_DELETE_TIME_MINUTES: ${DEFAULT_DELETE_TIME_MINUTES:-10}
+      ENABLE_AUTO_DELETE_BY_DEFAULT: ${ENABLE_AUTO_DELETE_BY_DEFAULT:-true}
+      
+      # Request configuration
+      REQUEST_TIMEOUT: ${REQUEST_TIMEOUT:-30}
+      MAX_RETRIES: ${MAX_RETRIES:-3}
+    
+    # Mount volumes for data persistence
+    volumes:
+      # Database persistence
+      - ./data:/app/data
+      # Logs persistence
+      - ./logs:/app/logs
+    
+    # Resource limits (optional but recommended)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "com.example=telegram-bot"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "python main.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Network configuration
+    networks:
+      - telegram-network
+
+networks:
+  telegram-network:
+    driver: bridge
+
+# Usage:
+# 1. Create .env file with BOT_TOKEN
+# 2. Run: docker-compose up -d
+# 3. View logs: docker-compose logs -f
+# 4. Stop: docker-compose down
