@@ -1,0 +1,7 @@
+# Core Dependencies
+python-telegram-bot>=20.0
+APScheduler>=3.10.0
+python-dotenv>=1.0.0
+
+# Optional but recommended for production
+gunicorn>=21.0.0  # For running on Render/Railway
