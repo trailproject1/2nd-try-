@@ -19,13 +19,12 @@ from telegram.ext import (
 from config import Config
 from database import DatabaseManager
 from logger import setup_logging
-from handlers.message_handler import MessageHandlers
-from handlers.group_handler import GroupHandlers
-from handlers.error_handler import ErrorHandlers
-from commands.admin_commands import AdminCommands
-from commands.user_commands import UserCommands
-from scheduler.message_scheduler import MessageScheduler
-
+from message_handler import MessageHandlers
+from group_handler import GroupHandlers
+from error_handler import ErrorHandlers
+from admin_commands import AdminCommands
+from user_commands import UserCommands
+from message_scheduler import MessageScheduler
 
 logger = logging.getLogger(__name__)
 
